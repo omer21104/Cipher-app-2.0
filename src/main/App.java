@@ -3,9 +3,13 @@ package main;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+
+import javax.swing.JButton;
+
 import window.*;
 
 import ciphers.CeaserCipher;
+import ciphers.Cipher;
 import file_parser.Parser;
 
 public class App implements ActionListener 
@@ -15,6 +19,8 @@ public class App implements ActionListener
 	static final int HEIGHT = 600, WIDTH = 800;
 	static final String[] CIPHERS = {"Caeser"};
 	static final String[] MODES = {"encrypt", "decrypt"};
+	
+	private Window w;
 
 	public static void main(String[] args)
 	{
@@ -27,7 +33,7 @@ public class App implements ActionListener
 	
 	public App()
 	{
-		Window w = new Window(HEIGHT, WIDTH, this);	
+		w = new Window(HEIGHT, WIDTH, this);	
 	}
 
 	
@@ -46,6 +52,36 @@ public class App implements ActionListener
 	{
 		// Handle button click here
 		// Create a new Cipher object based on selections
+		
+		
+		if (e.getActionCommand().equals("GO!"))
+		{
+			int cipherIndex = w.getCipherSelection();
+			Cipher c = null;
+			switch (CIPHERS[cipherIndex])
+			{
+			case "Caeser":
+				// caeser
+				c = new CeaserCipher(w.getMessage(), w.getKey());
+
+				
+			}
+			if (w.getModeSelection() == 0)
+			{
+				// encryption
+				w.setTranslatedMessage(c.encrypt());
+			}
+			else if (w.getModeSelection() == 1)
+			{
+				// decrytion
+				w.setTranslatedMessage(c.decrypt());
+			}
+			
+			
+		}
+		
+		
+		
 		
 	}
 }

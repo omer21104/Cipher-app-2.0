@@ -1,19 +1,19 @@
 package window;
 
-import java.awt.BorderLayout;
 import java.awt.Canvas;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.Font;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 import main.App;
+import warnings.KeyWarning;
 
 public class Window extends Canvas {
 
@@ -25,7 +25,9 @@ public class Window extends Canvas {
 	JLabel label1, label2, label3, label4, label5;
 	JButton button;
     JTextArea textArea1, textArea2, textArea3;
+    JFormattedTextField keyField;
     JComboBox cipherList, modeList;
+    Font font = new Font("Arial", Font.PLAIN, 16);
     
     // Layout variables
     int startX = 20,   startY = 20,
@@ -49,6 +51,7 @@ public class Window extends Canvas {
 		textArea1 = new JTextArea(16,16);
 		textArea2 = new JTextArea(16,16);
 		textArea3 = new JTextArea(16,16);
+		//keyField = new JFormattedTextField(NumberFormat.getIntegerInstance());
 
 		// configure layout
 		panel.setLayout(null);
@@ -60,10 +63,15 @@ public class Window extends Canvas {
 		textArea1.setBounds(midX, startY, 400, 170);
 		textArea2.setBounds(midX, endY, 400, 170);
 		textArea3.setBounds(midX, midY, 100, 60);
+		//keyField.setBounds(midX, midY, 100, 60);
 		textArea1.setLineWrap(true);
 		textArea2.setLineWrap(true);
 		textArea1.setWrapStyleWord(true);
 		textArea2.setWrapStyleWord(true);
+		textArea1.setFont(font);
+		textArea2.setFont(font);
+		textArea3.setFont(font);
+		//keyField.setFont(font);
 		cipherList.setBounds(endX, startY, 100, 30);
 		modeList.setBounds(endX, endY, 100, 30);
 		button.setBounds(endX - offset, endY + offset*2, 150, 50);
@@ -77,6 +85,7 @@ public class Window extends Canvas {
 		panel.add(textArea1);
 		panel.add(textArea2);
 		panel.add(textArea3);
+		//panel.add(keyField);
 		panel.add(cipherList);
 		panel.add(modeList);
 		panel.add(button);
@@ -111,5 +120,30 @@ public class Window extends Canvas {
 		return cipherList.getSelectedIndex();
 	}
 	
+	public String getMessage()
+	{
+		return textArea1.getText();
+	}
 
+	public String getTranslatedMessage()
+	{
+		return textArea2.getText();
+	}
+	
+	public int getKey()
+	{
+		// check for any non digit characters in key field
+		if (textArea3.getText().matches("[^0-9]+"))
+		{
+			textArea3.setText("0");
+			new KeyWarning();
+			return 0;
+		}
+		return (int) Integer.valueOf(textArea3.getText());
+	}
+	
+	public void setTranslatedMessage(String msg)
+	{
+		textArea2.setText(msg);
+	}
 }
